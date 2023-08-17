@@ -8,6 +8,18 @@ function App() {
   const [startScreen, setStartScreen] = useState(true);
   const [firstName, setFirstName] = useState("");
   const [btnDisabled, setBtnDisabled] = useState(false);
+  const [nameEmpty, setNameEmpty] = useState(false);
+
+  const handleClick = () => {
+    if (firstName.length === 0) {
+      setNameEmpty(true);
+    } else {
+      setNameEmpty(false);
+      setFirstName("");
+      //make call to connect to websocket
+      console.log(firstName);
+    }
+  };
 
   return (
     <div class="pt-5">
@@ -32,6 +44,11 @@ function App() {
                   }}
                 />
                 <label for="floatingInputGrid">Enter your first name...</label>
+                {nameEmpty && (
+                  <div class="text-danger">
+                    <p class="text-center">Can't leave field empty</p>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -40,6 +57,9 @@ function App() {
               type="button"
               class="btn btn-success btn-lg"
               disabled={btnDisabled}
+              onClick={() => {
+                handleClick();
+              }}
             >
               Connect
             </button>
