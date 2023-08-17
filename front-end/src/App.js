@@ -12,6 +12,7 @@ function App() {
   const [roomScreen, setRoomScreen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [waiting, setWaiting] = useState(false);
+  const [otherName, setOtherName] = useState("waiting for other user...");
 
   const handleClick = async () => {
     setBtnDisabled(true);
@@ -84,15 +85,43 @@ function App() {
         </div>
       )}
       {roomScreen && (
-        <div class="pt-5">
-          {loading && (
-            <div class="d-flex justify-content-center">
-              <div class="spinner-border" role="status">
-                <span class="visually-hidden">Loading...</span>
+        <div class="pt-2">
+          {loading ? (
+            <div class="container text-center pt-5">
+              <div class="row">
+                <div class="col align-self-center">
+                  <div class="spinner-border col-3 p-3 mb-2" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
+                </div>
+              </div>
+              <div class="row pt-2">
+                <div class="col align-self-center">
+                  <p>Connecting to websocket...</p>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div class="container text-center">
+              <div class="row">
+                <div class="col">
+                  <div class="text-center">
+                    <p class="fs-2 shadow-sm p-3 mb-5 bg-body-tertiary rounded display-1">
+                      Your Coordinates
+                    </p>
+                  </div>
+                </div>
+                <div class="col">
+                  {" "}
+                  <div class="text-center">
+                    <p class="fs-2 shadow-sm p-3 mb-5 bg-body-tertiary rounded display-1">
+                      {otherName}
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
           )}
-          <div></div>
         </div>
       )}
     </div>
