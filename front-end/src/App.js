@@ -9,15 +9,32 @@ function App() {
   const [firstName, setFirstName] = useState("");
   const [btnDisabled, setBtnDisabled] = useState(false);
   const [nameEmpty, setNameEmpty] = useState(false);
+  const [roomScreen, setRoomScreen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [waiting, setWaiting] = useState(false);
 
-  const handleClick = () => {
+  const handleClick = async () => {
+    setBtnDisabled(true);
     if (firstName.length === 0) {
       setNameEmpty(true);
+      setBtnDisabled(false);
     } else {
+      setStartScreen(false);
+      setRoomScreen(true);
+
+      //load icon
+      setLoading(true);
+
       setNameEmpty(false);
       setFirstName("");
-      //make call to connect to websocket
-      console.log(firstName);
+
+      //make call to connect to websocket by calling api and getting the response of first/second user
+      console.log("connecting to websocket...");
+      await new Promise((resolve) => setTimeout(resolve, 5000));
+
+      //after connection is established show breadcrumb saying connected and wait for other user to join
+      setLoading(false);
+      console.log("connected!");
     }
   };
 
@@ -64,6 +81,18 @@ function App() {
               Connect
             </button>
           </div>
+        </div>
+      )}
+      {roomScreen && (
+        <div class="pt-5">
+          {loading && (
+            <div class="d-flex justify-content-center">
+              <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+            </div>
+          )}
+          <div></div>
         </div>
       )}
     </div>
