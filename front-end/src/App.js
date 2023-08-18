@@ -33,10 +33,7 @@ function App() {
     } else {
       setStartScreen(false);
       setRoomScreen(true);
-
-      //load icon
       setLoading(true);
-
       setNameEmpty(false);
       setFirstName("");
 
@@ -147,27 +144,37 @@ function App() {
                     <p class="fs-2 shadow-sm p-3 mb-5 bg-body-tertiary rounded display-1">
                       {otherName}
                     </p>
-                    <p class="fs-3">
-                      <span class="p-5">
-                        Latitude: {coords2.toReversed()[0].Latitude}
-                      </span>
+                    {!waiting ? (
                       <span>
-                        Longitude: {coords2.toReversed()[0].Longitude}
+                        <p class="fs-3">
+                          <span class="p-5">
+                            Latitude: {coords2.toReversed()[0].Latitude}
+                          </span>
+                          <span>
+                            Longitude: {coords2.toReversed()[0].Longitude}
+                          </span>
+                        </p>
+                        <div
+                          class="shadow-sm p-3 bg-body-tertiary rounded"
+                          style={{ height: "50vh" }}
+                        >
+                          <ul class="list-group">
+                            {coords2.toReversed().map((item) => (
+                              <li class="list-group-item">
+                                <span class="p-5">
+                                  Latitude: {item.Latitude}
+                                </span>
+                                <span>Longitude: {item.Longitude}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
                       </span>
-                    </p>
-                    <div
-                      class="shadow-sm p-3 bg-body-tertiary rounded"
-                      style={{ height: "50vh" }}
-                    >
-                      <ul class="list-group">
-                        {coords2.toReversed().map((item) => (
-                          <li class="list-group-item">
-                            <span class="p-5">Latitude: {item.Latitude}</span>
-                            <span>Longitude: {item.Longitude}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
+                    ) : (
+                      <div class="spinner-border col-3 p-3 mb-2" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
