@@ -4,13 +4,6 @@ const bootstrap = require("bootstrap");
 
 document.body.style.backgroundColor = "Cornsilk";
 
-const coords = [];
-const coords2 = [
-  { Latitude: 22.223, Longitude: -62.54 },
-  { Latitude: 12.223, Longitude: -94.54 },
-  { Latitude: 42.223, Longitude: -83.54 },
-];
-
 function App() {
   const [startScreen, setStartScreen] = useState(true);
   const [firstName, setFirstName] = useState("");
@@ -20,6 +13,9 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [waiting, setWaiting] = useState(true);
   const [otherName, setOtherName] = useState("waiting for other user...");
+
+  const [coords, setCoords] = useState([]);
+  const [coords2, setCoords2] = useState([]);
 
   const handleClick = async () => {
     setBtnDisabled(true);
@@ -40,8 +36,38 @@ function App() {
       //after connection is established show breadcrumb saying connected and wait for other user to join
       setLoading(false);
       console.log("connected!");
+
+      //once other user has connected
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      console.log("other user has connected!");
+      setOtherName("Syed");
+      setWaiting(false);
     }
   };
+
+  const getCoords = () => {
+    navigator.geolocation.getCurrentPosition(function (position) {
+      console.log("Latitude is :", position.coords.latitude);
+      console.log("Longitude is :", position.coords.longitude);
+
+      setCoords((coords) => [
+        ...coords,
+        {
+          Latitude: position.coords.latitude,
+          Longitude: position.coords.longitude,
+        },
+      ]);
+
+      //send coords to websocket
+      console.log(coords);
+    });
+  };
+
+  useEffect(() => {
+    if (!waiting) {
+      setInterval(getCoords, 10000);
+    }
+  }, [waiting]);
 
   return (
     <div class="pt-5">
@@ -114,11 +140,12 @@ function App() {
                       Your Coordinates
                     </p>
                     <p class="fs-3">
-                      <span class="p-5">
+                      <span>
                         Latitude:{" "}
                         {coords.length > 0
                           ? coords.toReversed()[0].Latitude
-                          : "--"}
+                          : "-- "}
+                        {" / "}
                       </span>
                       <span>
                         Longitude:{" "}
@@ -151,11 +178,12 @@ function App() {
                     {!waiting ? (
                       <span>
                         <p class="fs-3">
-                          <span class="p-5">
+                          <span>
                             Latitude:{" "}
                             {coords2.length > 0
                               ? coords2.toReversed()[0].Latitude
-                              : "--"}
+                              : "-- "}
+                            {" / "}
                           </span>
                           <span>
                             Longitude:{" "}
