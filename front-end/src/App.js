@@ -31,16 +31,20 @@ function App() {
 
       //make call to connect to websocket by calling api and getting the response of first/second user
       console.log("connecting to websocket...");
-      await new Promise((resolve) => setTimeout(resolve, 2000));
 
-      //after connection is established show breadcrumb saying connected and wait for other user to join
+      await new Promise((resolve) => setTimeout(resolve, 2000)); //after connected to websocket
+
       setLoading(false);
-      console.log("connected!");
 
-      //once other user has connected
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      console.log("other user has connected!");
-      setOtherName("Syed");
+      //if api says you are the second user, get the name from api response and then start
+      //else wait for websocket to respond with name (indicating other user has connected)
+      if (false) {
+        setOtherName("Syed");
+      } else {
+        await new Promise((resolve) => setTimeout(resolve, 2000)); //after other user has connected
+        console.log("other user has connected!");
+        setOtherName("Syed");
+      }
       setWaiting(false);
     }
   };
@@ -174,6 +178,7 @@ function App() {
                   <div class="text-center">
                     <p class="fs-2 shadow-sm p-3 mb-5 bg-body-tertiary rounded display-1">
                       {otherName}
+                      {"'s Coordinates"}
                     </p>
                     {!waiting ? (
                       <span>
