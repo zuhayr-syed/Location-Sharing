@@ -7,7 +7,17 @@ document.body.style.backgroundColor = "Cornsilk";
 const coords = [
   { Latitude: 32.223, Longitude: -72.54 },
   { Latitude: 52.223, Longitude: -84.54 },
-  { Latitude: 12.223, Longitude: -63.54 },
+  { Latitude: 62.223, Longitude: -63.54 },
+  { Latitude: 72.223, Longitude: -63.54 },
+  { Latitude: 82.223, Longitude: -63.54 },
+  { Latitude: 92.223, Longitude: -63.54 },
+  { Latitude: 93.223, Longitude: -63.54 },
+  { Latitude: 94.223, Longitude: -63.54 },
+  { Latitude: 95.223, Longitude: -63.54 },
+  { Latitude: 96.223, Longitude: -63.54 },
+  { Latitude: 97.223, Longitude: -63.54 },
+  { Latitude: 98.223, Longitude: -63.54 },
+  { Latitude: 99.223, Longitude: -63.54 },
 ];
 const coords2 = [
   { Latitude: 22.223, Longitude: -62.54 },
@@ -125,7 +135,7 @@ function App() {
                     </p>
                     <div
                       class="shadow-sm p-3 bg-body-tertiary rounded"
-                      style={{ height: "50vh" }}
+                      style={{ height: "50vh", overflow: "scroll" }}
                     >
                       <ul class="list-group">
                         {coords.toReversed().map((item) => (
@@ -156,7 +166,7 @@ function App() {
                         </p>
                         <div
                           class="shadow-sm p-3 bg-body-tertiary rounded"
-                          style={{ height: "50vh" }}
+                          style={{ height: "50vh", overflow: "scroll" }}
                         >
                           <ul class="list-group">
                             {coords2.toReversed().map((item) => (
