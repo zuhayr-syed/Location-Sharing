@@ -32,7 +32,7 @@ function App() {
   const [nameEmpty, setNameEmpty] = useState(false);
   const [roomScreen, setRoomScreen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [waiting, setWaiting] = useState(false);
+  const [waiting, setWaiting] = useState(true);
   const [otherName, setOtherName] = useState("waiting for other user...");
 
   const handleClick = async () => {
@@ -49,7 +49,7 @@ function App() {
 
       //make call to connect to websocket by calling api and getting the response of first/second user
       console.log("connecting to websocket...");
-      await new Promise((resolve) => setTimeout(resolve, 5000));
+      await new Promise((resolve) => setTimeout(resolve, 2000));
 
       //after connection is established show breadcrumb saying connected and wait for other user to join
       setLoading(false);
@@ -181,8 +181,22 @@ function App() {
                         </div>
                       </span>
                     ) : (
-                      <div class="spinner-border col-3 p-3 mb-2" role="status">
-                        <span class="visually-hidden">Loading...</span>
+                      <div class="container text-center pt-5">
+                        <div class="row">
+                          <div class="col align-self-center">
+                            <div
+                              class="spinner-border col-3 p-3 mb-2"
+                              role="status"
+                            >
+                              <span class="visually-hidden">Loading...</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row pt-2">
+                          <div class="col align-self-center">
+                            <p>Waiting for other user to connect...</p>
+                          </div>
+                        </div>
                       </div>
                     )}
                   </div>
