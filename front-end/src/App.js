@@ -4,21 +4,7 @@ const bootstrap = require("bootstrap");
 
 document.body.style.backgroundColor = "Cornsilk";
 
-const coords = [
-  { Latitude: 32.223, Longitude: -72.54 },
-  { Latitude: 52.223, Longitude: -84.54 },
-  { Latitude: 62.223, Longitude: -63.54 },
-  { Latitude: 72.223, Longitude: -63.54 },
-  { Latitude: 82.223, Longitude: -63.54 },
-  { Latitude: 92.223, Longitude: -63.54 },
-  { Latitude: 93.223, Longitude: -63.54 },
-  { Latitude: 94.223, Longitude: -63.54 },
-  { Latitude: 95.223, Longitude: -63.54 },
-  { Latitude: 96.223, Longitude: -63.54 },
-  { Latitude: 97.223, Longitude: -63.54 },
-  { Latitude: 98.223, Longitude: -63.54 },
-  { Latitude: 99.223, Longitude: -63.54 },
-];
+const coords = [];
 const coords2 = [
   { Latitude: 22.223, Longitude: -62.54 },
   { Latitude: 12.223, Longitude: -94.54 },
@@ -129,9 +115,17 @@ function App() {
                     </p>
                     <p class="fs-3">
                       <span class="p-5">
-                        Latitude: {coords.toReversed()[0].Latitude}
+                        Latitude:{" "}
+                        {coords.length > 0
+                          ? coords.toReversed()[0].Latitude
+                          : "--"}
                       </span>
-                      <span>Longitude: {coords.toReversed()[0].Longitude}</span>
+                      <span>
+                        Longitude:{" "}
+                        {coords.length > 0
+                          ? coords.toReversed()[0].Longitude
+                          : "--"}
+                      </span>
                     </p>
                     <div
                       class="shadow-sm p-3 bg-body-tertiary rounded"
@@ -158,10 +152,16 @@ function App() {
                       <span>
                         <p class="fs-3">
                           <span class="p-5">
-                            Latitude: {coords2.toReversed()[0].Latitude}
+                            Latitude:{" "}
+                            {coords2.length > 0
+                              ? coords2.toReversed()[0].Latitude
+                              : "--"}
                           </span>
                           <span>
-                            Longitude: {coords2.toReversed()[0].Longitude}
+                            Longitude:{" "}
+                            {coords2.length > 0
+                              ? coords2.toReversed()[0].Longitude
+                              : "--"}
                           </span>
                         </p>
                         <div
