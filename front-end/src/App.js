@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
+import axios from "axios";
 
 const bootstrap = require("bootstrap");
+const baseURL = "http://127.0.0.1:5000/connect/";
 
 document.body.style.backgroundColor = "Cornsilk";
 
@@ -27,24 +29,18 @@ function App() {
       setRoomScreen(true);
       setLoading(true);
       setNameEmpty(false);
-      setFirstName("");
+      // setFirstName("");
 
       //make call to connect to websocket by calling api and getting the response of first/second user
-      console.log("connecting to websocket...");
+      console.log("waiting for other user...");
+      await axios.get(baseURL + firstName).then((response) => {
+        setOtherName(response.data.other_user);
+        setLoading(false);
+      });
+      console.log("both users connected to server!");
 
-      await new Promise((resolve) => setTimeout(resolve, 2000)); //after connected to websocket
+      await new Promise((resolve) => setTimeout(resolve, 2000)); //connect to websocket
 
-      setLoading(false);
-
-      //if api says you are the second user, get the name from api response and then start
-      //else wait for websocket to respond with name (indicating other user has connected)
-      if (false) {
-        setOtherName("Syed");
-      } else {
-        await new Promise((resolve) => setTimeout(resolve, 2000)); //after other user has connected
-        console.log("other user has connected!");
-        setOtherName("Syed");
-      }
       setWaiting(false);
     }
   };
@@ -131,7 +127,7 @@ function App() {
               </div>
               <div class="row pt-2">
                 <div class="col align-self-center">
-                  <p>Connecting to websocket...</p>
+                  <p>Waiting for other user to connect...</p>
                 </div>
               </div>
             </div>
