@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { io } from "socket.io-client";
 
 const bootstrap = require("bootstrap");
 const baseURL = "http://127.0.0.1:5000/connect/";
@@ -19,6 +20,8 @@ function App() {
   const [coords, setCoords] = useState([]);
   const [coords2, setCoords2] = useState([]);
 
+  const [socketInstance, setSocketInstance] = useState("");
+
   const handleClick = async () => {
     setBtnDisabled(true);
     if (firstName.length === 0) {
@@ -29,7 +32,6 @@ function App() {
       setRoomScreen(true);
       setLoading(true);
       setNameEmpty(false);
-      // setFirstName("");
 
       //make call to connect to websocket by calling api and getting the response of first/second user
       console.log("waiting for other user...");
@@ -37,11 +39,30 @@ function App() {
         setOtherName(response.data.other_user);
         setLoading(false);
       });
+
+      const socket = io("http://127.0.0.1:5000/", {
+        transports: ["websocket"],
+        cors: {
+          origin: "http://localhost:3000/",
+        },
+      });
+
+      setSocketInstance(socket);
+
+      socket.on("connect", (data) => {
+        console.log("connected: ", data);
+      });
+
       console.log("both users connected to server!");
-
-      await new Promise((resolve) => setTimeout(resolve, 2000)); //connect to websocket
-
       setWaiting(false);
+
+      socket.on("disconnect", (data) => {
+        console.log(data);
+      });
+
+      return function cleanup() {
+        socket.disconnect();
+      };
     }
   };
 
