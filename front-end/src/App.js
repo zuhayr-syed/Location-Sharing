@@ -33,7 +33,6 @@ function App() {
       setLoading(true);
       setNameEmpty(false);
 
-      //make call to connect to websocket by calling api and getting the response of first/second user
       console.log("waiting for other user...");
       await axios.get(baseURL + firstName).then((response) => {
         setOtherName(response.data.other_user);
@@ -71,16 +70,15 @@ function App() {
       console.log("Latitude is :", position.coords.latitude);
       console.log("Longitude is :", position.coords.longitude);
 
-      setCoords((coords) => [
-        ...coords,
-        {
-          Latitude: position.coords.latitude,
-          Longitude: position.coords.longitude,
-        },
-      ]);
+      const newCoord = {
+        Latitude: position.coords.latitude,
+        Longitude: position.coords.longitude,
+        user: firstName,
+      };
 
-      //send coords to websocket
-      console.log(coords);
+      setCoords((coords) => [...coords, newCoord]);
+
+      socketInstance.emit("data", newCoord);
     });
   };
 
@@ -89,6 +87,17 @@ function App() {
       setInterval(getCoords, 10000);
     }
   }, [waiting]);
+
+  useEffect(() => {
+    if (coords.length > 0) {
+      socketInstance.on("data", (data) => {
+        console.log("RECEIVED: ", data.data);
+        if (data.data.user !== firstName) {
+          setCoords2((coords) => [...coords, data.data]);
+        }
+      });
+    }
+  }, [socketInstance, coords]);
 
   return (
     <div class="pt-5">
