@@ -1,6 +1,9 @@
 from flask import Flask, request, jsonify
-from flask_socketio import SocketIO,emit
+from flask_socketio import SocketIO, emit
 from flask_cors import CORS
+from kafka import KafkaProducer
+import json
+import time
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
@@ -10,6 +13,10 @@ socketio = SocketIO(app, cors_allowed_origins="*")
 users = 0
 names = []
 
+SERVER_KAFKA_TOPIC = "user_coordinates"
+producer = KafkaProducer(bootstrap_servers="localhost:29092")
+coordinate_id = {}
+msg_id = 0
 
 @app.route("/connect/<name>")
 def connect(name):
@@ -28,6 +35,7 @@ def connect(name):
         return jsonify(message), 400
 
     names.append(name)
+    coordinate_id[name] = 0
     print(name, 'has joined')
 
     while users < 2:
@@ -53,6 +61,19 @@ def handle_message(data):
     """event listener when client types a message"""
     print("data from the front end: ", str(data))
     emit("data", {'data': data, 'id': request.sid}, broadcast=True)
+
+    data['coord_id'] = coordinate_id[data['user']]
+    coordinate_id[data['user']] += 1
+
+    global msg_id
+    data['id'] = msg_id
+    msg_id += 1
+
+    producer.send(
+        SERVER_KAFKA_TOPIC,
+        json.dumps(data).encode("utf-8")
+    )
+    print(f"Done sending: {str(data)}")
 
 
 @socketio.on_error_default
