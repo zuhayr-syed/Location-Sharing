@@ -94,6 +94,13 @@ def disconnected():
         json.dumps(data).encode("utf-8")
     )
 
+    global users
+    global names
+    global msg_id
+    users = 0
+    names = []
+    msg_id = 0
+
 
 if __name__ == "__main__":
     socketio.run(app, debug=True, port=5000)
