@@ -88,6 +88,12 @@ def disconnected():
     print("user disconnected from websocket")
     emit("disconnect", f"user {request.sid} disconnected", broadcast=True)
 
+    data = {"alert": "Ended session"}
+    producer.send(
+        SERVER_KAFKA_TOPIC,
+        json.dumps(data).encode("utf-8")
+    )
+
 
 if __name__ == "__main__":
     socketio.run(app, debug=True, port=5000)
