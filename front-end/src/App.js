@@ -56,7 +56,8 @@ function App() {
       setWaiting(false);
 
       socket.on("disconnect", (data) => {
-        console.log(data);
+        console.log("Other user disconnected: ", data);
+        window.location.reload();
       });
 
       return function cleanup() {
