@@ -44,8 +44,8 @@ if __name__ == "__main__":
                                             user_name    VARCHAR(40) NOT NULL,
                                             coord_id    INT NOT NULL,
                                             user_coord_id   INT NOT NULL,
-                                            latitude    INT,
-                                            longitude   INT
+                                            latitude    FLOAT,
+                                            longitude   FLOAT
                                     ) '''.format(str(itr))
                     cur.execute(create_script)
                     conn.commit()
@@ -61,6 +61,15 @@ if __name__ == "__main__":
                         itr += 1
                         create_db = True
                         print("Current session has ended")
+                else:
+                    insert_script = 'INSERT INTO session{} (user_name, coord_id, user_coord_id, latitude, longitude) VALUES (%s, %s, %s, %s, %s)'.format(
+                        str(itr))
+                    insert_values = (consumed_message['user'], consumed_message['id'],
+                                     consumed_message['coord_id'], consumed_message['Latitude'],
+                                     consumed_message['Longitude'])
+
+                    cur.execute(insert_script, insert_values)
+                    conn.commit()
 
     except Exception as error:
         print(error)
